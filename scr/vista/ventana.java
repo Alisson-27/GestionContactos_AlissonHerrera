@@ -24,12 +24,16 @@ public class ventana extends JFrame {
     public JLabel lblNombre, lblTelefono, lblEmail;
 
     private ResourceBundle mensajes;
+    private String idiomaActual;
 
-    public ventana() {
-        setIdioma("es"); // idioma por defecto: español
+    // 🔹 Constructor que recibe el idioma
+    public ventana(String idioma) {
+        setIdioma(idioma);
+        idiomaActual = idioma;
         initUI();
     }
 
+    // 🔹 Configuración del idioma usando ResourceBundle
     private void setIdioma(String idioma) {
         Locale locale;
         switch (idioma) {
@@ -40,6 +44,7 @@ public class ventana extends JFrame {
         mensajes = ResourceBundle.getBundle("idiomas.mensajes", locale);
     }
 
+    // 🔹 Interfaz gráfica
     private void initUI() {
         setTitle(mensajes.getString("app.title"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,7 +58,7 @@ public class ventana extends JFrame {
         tabbedPane = new JTabbedPane();
         contentPane.add(tabbedPane, BorderLayout.CENTER);
 
-        // Panel Contactos
+        // Panel de contactos
         panelContactos = new JPanel();
         panelContactos.setLayout(null);
         tabbedPane.addTab(mensajes.getString("tab.contacts"), panelContactos);
@@ -66,6 +71,13 @@ public class ventana extends JFrame {
         cmb_idioma = new JComboBox<>(new String[]{"Español", "English", "Français"});
         cmb_idioma.setBounds(850, 35, 120, 25);
         panelContactos.add(cmb_idioma);
+
+        // Selecciona el idioma actual en el combo
+        switch (idiomaActual) {
+            case "en": cmb_idioma.setSelectedItem("English"); break;
+            case "fr": cmb_idioma.setSelectedItem("Français"); break;
+            default: cmb_idioma.setSelectedItem("Español"); break;
+        }
 
         lblNombre = new JLabel(mensajes.getString("label.name") + ":");
         lblNombre.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -139,23 +151,28 @@ public class ventana extends JFrame {
         scrollTabla.setBounds(25, 242, 971, 398);
         panelContactos.add(scrollTabla);
 
-        // Evento para cambiar idioma
+        // 🔹 Evento para cambiar idioma
         cmb_idioma.addActionListener(e -> {
             String selected = cmb_idioma.getSelectedItem().toString();
-            if (selected.equals("English")) setIdioma("en");
-            else if (selected.equals("Français")) setIdioma("fr");
-            else setIdioma("es");
-            dispose();
-            ventana nueva = new ventana();
+            String nuevoIdioma;
+
+            if (selected.equals("English")) nuevoIdioma = "en";
+            else if (selected.equals("Français")) nuevoIdioma = "fr";
+            else nuevoIdioma = "es";
+
+            dispose(); // cerrar ventana actual
+            ventana nueva = new ventana(nuevoIdioma); // abrir con nuevo idioma
             nueva.setVisible(true);
         });
 
+        // Inicializa la lógica del controlador
         new logica_ventana(this);
     }
 
+    // 🔹 Método principal
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
-            ventana frame = new ventana();
+            ventana frame = new ventana("es"); // idioma por defecto: español
             frame.setVisible(true);
         });
     }
