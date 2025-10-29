@@ -1,0 +1,16 @@
+app.title=Gestion des Contacts
+tab.contacts=Contacts
+tab.stats=Statistiques
+label.name=Nom
+label.phone=Téléphone
+label.email=Courriel
+label.category=Catégorie
+label.favorite=Favori
+button.add=Ajouter
+button.edit=Modifier
+button.delete=Supprimer
+combo.choose=Choisissez une catégorie
+combo.family=Famille
+combo.friends=Amis
+combo.work=Travail
+checkbox.favorite=Contact favori
